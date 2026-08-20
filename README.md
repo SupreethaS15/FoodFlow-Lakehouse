@@ -16,10 +16,6 @@ Built as part of a Data Engineering coursework project — designed and implemen
 - [Star Schema](#star-schema)
 - [Dashboard](#dashboard)
 - [Automation](#automation)
-- [Repository Structure](#repository-structure)
-- [How to Run This](#how-to-run-this)
-- [Key Design Decisions](#key-design-decisions)
-- [Limitations & Honest Scope Notes](#limitations--honest-scope-notes)
 - [Results & Insights](#results--insights)
 - [Author](#author)
 
@@ -150,9 +146,7 @@ Built as a **Databricks AI/BI Dashboard**, authored using natural-language promp
 - Comparison charts — orders by cuisine, delivery time by weather/traffic/vehicle type
 - Detail tables — top-rated restaurants, most-ordered restaurants, outlier orders, sample reviews, recent orders
 
-> **[Insert dashboard screenshots here]**
-> `docs/dashboard-overview.png`
-> `docs/dashboard-kpis.png`
+> View the published Dashboard via 'https://dbc-f1860229-946f.cloud.databricks.com/dashboardsv3/01f1963467801641b93c5b6fc906a25a/published?o=7474648018775897'
 
 ---
 
@@ -176,51 +170,6 @@ A multi-task Databricks Job is configured with a **File Arrival trigger** on the
 
 ---
 
-## Repository Structure
-
-```
-├── notebooks/
-│   ├── 01_data_generator.py        # Loads and links the 3 real datasets into the landing zone
-│   └── 02_bronze_silver_gold.py    # Full Bronze → Silver → Gold pipeline (EDA, star schema)
-├── docs/
-│   ├── project_report.pdf          # Full formal project report
-│   ├── data_source_manifest.json   # Auto-generated data provenance record
-│   └── dashboard-*.png             # Dashboard screenshots
-└── README.md
-```
-
----
-
-## How to Run This
-
-1. Download the 3 real datasets from the links above (free Kaggle account required)
-2. Create a Databricks account ([Free Edition](https://www.databricks.com/try-databricks) works)
-3. Upload the 3 CSVs to `/Volumes/.../food_delivery_analytics/real_data/`
-4. Import `01_data_generator.py` and run it — auto-detects the CSVs by column signature, no filename matching required
-5. Import and run `02_bronze_silver_gold.py` to build the Bronze/Silver/Gold layers
-6. Build an AI/BI Dashboard on the resulting `gold_*` tables
-7. (Optional) Wrap both notebooks in a Databricks Job with a File Arrival trigger for full automation
-
----
-
-## Key Design Decisions
-
-- **Real data over synthetic**: chose to integrate 3 real public datasets with transparently documented linking logic, rather than generating fully synthetic business data — prioritizing authenticity and traceability.
-- **Databricks Workflows over Apache Airflow**: uses the platform-native orchestration tool to achieve the same DAG-based task dependency model without standing up a separate orchestration cluster.
-- **File-arrival batch trigger over Kafka streaming**: achieves "new data triggers processing automatically" without the operational overhead of a dedicated streaming broker, appropriate for this project's data velocity.
-- **Flag, don't drop, outliers**: statistical outliers are marked with a boolean column rather than removed, preserving potentially legitimate edge-case data for downstream analysis to decide on.
-
----
-
-## Limitations & Honest Scope Notes
-
-This project intentionally scoped out a few things that a larger production system would include, and it's worth stating plainly:
-
-- No true row-level Change Data Capture (CDC) via a tool like Debezium — the file-arrival + incremental-append pattern achieves an equivalent practical outcome at batch scale.
-- No Apache Kafka — real-time streaming wasn't required for this data's update frequency; Databricks Workflows' file-arrival trigger was a better fit for the actual use case.
-- No Apache Airflow — Databricks Workflows provides equivalent orchestration natively on the same platform.
-
----
 
 ## Results & Insights
 
@@ -229,12 +178,5 @@ This project intentionally scoped out a few things that a larger production syst
 - Vehicle type shows measurable differences in average delivery time, useful for fleet allocation decisions
 - Data-quality outlier rate is tracked continuously as a trust indicator for all other reported metrics
 
-*(See `docs/project_report.pdf` for the full analysis with final figures.)*
 
 ---
-
-## Author
-
-**Supreetha**
-Integrated M.Sc., Decision and Computing Sciences (AI Specialization)
-Coimbatore Institute of Technology
