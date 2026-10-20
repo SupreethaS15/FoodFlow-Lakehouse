@@ -16,7 +16,6 @@ An end-to-end data engineering project that ingests, cleans, models, and visuali
 
 Built as part of a Data Engineering coursework project, and designed to reflect real production practices (idempotency, atomicity, incremental loading, schema enforcement, automated orchestration) rather than a one-off analysis script.
 
-> **Phase II demo video:** `<add your unlisted video link here>`
 
 ---
 
